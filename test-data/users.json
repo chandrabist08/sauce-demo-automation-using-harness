@@ -1,0 +1,12 @@
+{
+  "validUser": {
+    "email": "user@example.com",
+    "name": "Test User",
+    "role": "viewer"
+  },
+  "adminUser": {
+    "email": "admin@example.com",
+    "name": "Admin User",
+    "role": "admin"
+  }
+}
