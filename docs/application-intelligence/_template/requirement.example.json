@@ -1,0 +1,11 @@
+{
+  "id": "REQ-001",
+  "title": "Example requirement title",
+  "description": "As a user, I want to...",
+  "priority": "high",
+  "status": "approved",
+  "module": "auth",
+  "acceptanceCriteria": [
+    "Given... When... Then..."
+  ]
+}

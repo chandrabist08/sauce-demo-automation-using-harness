@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "mappings": [
+    {
+      "pattern": "playwright/configs/**",
+      "docs": ["docs/application-intelligence/**"]
+    },
+    {
+      "pattern": "playwright/support/helpers/**",
+      "docs": ["docs/application-intelligence/_template/module-context.md"]
+    },
+    {
+      "pattern": "harness/**",
+      "docs": ["docs/START-HERE.md", "CLAUDE.md"]
+    },
+    {
+      "pattern": "scripts/engine/**",
+      "docs": ["docs/START-HERE.md"]
+    }
+  ]
+}

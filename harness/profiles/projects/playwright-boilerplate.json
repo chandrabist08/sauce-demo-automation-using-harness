@@ -1,0 +1,23 @@
+{
+  "project": "playwright-boilerplate",
+  "version": "1.0.0",
+  "locked": true,
+  "framework": "playwright",
+  "pattern": "helper-first",
+  "architecture": "Config → Helpers → Tests",
+  "testRoot": "playwright",
+  "configRoot": "playwright/configs",
+  "commandRoot": "playwright/support/helpers",
+  "specGlob": "playwright/tests/**/*.spec.ts",
+  "effortLevel": "high",
+  "gateRepairLimit": 3,
+  "adapters": {
+    "claude": { "enabled": true },
+    "copilot": { "enabled": true }
+  },
+  "application": {
+    "name": "playwright-boilerplate",
+    "baseUrl": "http://localhost:3000",
+    "apiBaseUrl": "http://localhost:3001"
+  }
+}

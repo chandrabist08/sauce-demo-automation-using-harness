@@ -1,0 +1,28 @@
+name: Playwright Rules Check
+
+on:
+  pull_request:
+    paths:
+      - 'playwright/**'
+      - 'scripts/**'
+      - 'harness/**'
+
+jobs:
+  rules:
+    name: Enforce playwright rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Validate playwright rules (changed files)
+        run: node scripts/engine/validate-playwright-rules.mjs --base-ref origin/${{ github.base_ref }}
+      - name: Check conformance (no direct @playwright/test imports in specs)
+        run: node scripts/engine/conformance.mjs
+      - name: Check drift (harness.config.json up to date)
+        run: node scripts/engine/check-drift.mjs

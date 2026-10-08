@@ -1,0 +1,61 @@
+{
+  "framework": "playwright",
+  "pattern": "helper-first",
+  "architecture": "Config → Helpers → Tests",
+  "testRoot": "playwright",
+  "configRoot": "playwright/configs",
+  "commandRoot": "playwright/support/helpers",
+  "specGlob": "playwright/tests/**/*.spec.ts",
+  "effortLevel": "high",
+  "gateRepairLimit": 3,
+  "auth": { "strategy": "storage-state" },
+  "testData": { "strategy": "fresh" },
+  "credentials": { "source": "ci-secret" },
+  "adapters": {
+    "claude": { "enabled": true },
+    "copilot": { "enabled": true }
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm test*)",
+      "Bash(npm run test*)",
+      "Bash(npm run report*)",
+      "Bash(npm run lint*)",
+      "Bash(npm run format*)",
+      "Bash(npm run check:*)",
+      "Bash(npm run harness:*)",
+      "Bash(npx playwright*)",
+      "Bash(npx tsc --noEmit*)",
+      "Bash(grep -r* playwright/*)",
+      "Bash(find playwright/*)"
+    ],
+    "deny": ["WebSearch"]
+  },
+  "defaultMode": "plan",
+  "hooks": {
+    "prompt": ["harness-config-gate.mjs", "prompt-duplication-guard.mjs"],
+    "preWrite": ["pre-validate-playwright-rules.mjs"],
+    "postWrite": ["validate-playwright-rules.mjs"],
+    "stop": ["session-end-reminder.mjs"]
+  },
+  "rules": {
+    "block": [
+      "no-hard-wait",
+      "no-hardcoded-selector",
+      "no-hardcoded-route",
+      "no-page-object",
+      "no-credential-literal",
+      "storage-state-auth",
+      "base-fixture-import",
+      "smoke-read-only",
+      "no-sql-literal",
+      "focused-or-quarantined-test"
+    ],
+    "review": [
+      "locator-priority",
+      "narrow-before-index",
+      "search-before-create",
+      "one-requirement-tag"
+    ]
+  }
+}

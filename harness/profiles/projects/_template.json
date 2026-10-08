@@ -1,0 +1,21 @@
+{
+  "project": "__PROJECT_NAME__",
+  "version": "1.0.0",
+  "locked": false,
+  "framework": "playwright",
+  "pattern": "helper-first",
+  "architecture": "Config → Helpers → Tests",
+  "testRoot": "playwright",
+  "configRoot": "playwright/configs",
+  "commandRoot": "playwright/support/helpers",
+  "specGlob": "playwright/tests/**/*.spec.ts",
+  "adapters": {
+    "claude": { "enabled": true },
+    "copilot": { "enabled": true }
+  },
+  "application": {
+    "name": "__APP_NAME__",
+    "baseUrl": "__BASE_URL__",
+    "apiBaseUrl": "__API_BASE_URL__"
+  }
+}

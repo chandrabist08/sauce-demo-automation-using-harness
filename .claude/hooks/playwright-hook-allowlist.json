@@ -1,0 +1,4 @@
+{
+  "allowedFileExtensions": [".ts", ".js", ".mjs", ".json", ".md", ".yml", ".yaml"],
+  "allowedDirectories": ["playwright", "scripts", "harness", "docs", "evidence", ".claude", ".github"]
+}

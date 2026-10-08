@@ -1,75 +1,49 @@
 import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import { FRAMEWORK_EVIDENCE } from './playwright/configs/app/framework-evidence.js';
 
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+const ENV = process.env.ENV ?? 'qa';
+dotenv.config({ path: path.resolve(process.cwd(), `playwright/environments/.env.${ENV}`) });
+dotenv.config({ path: path.resolve(process.cwd(), '.env'), override: false });
 
-const ENV = process.env.ENV ?? 'dev';
 const BASE_URL = process.env.BASE_URL ?? 'http://localhost:3000';
-const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:3001';
+const retries = process.env.PW_RETRIES ? parseInt(process.env.PW_RETRIES) : 0;
+const trace = (process.env.PW_TRACE ?? 'on-first-retry') as 'on-first-retry' | 'retain-on-failure' | 'on' | 'off';
+const testIdAttribute = process.env.TEST_ID_ATTRIBUTE ?? 'data-testid';
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './playwright/tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 4 : undefined,
+  retries,
+  workers: process.env.CI ? 1 : undefined,
   timeout: 30_000,
-  expect: { timeout: 5_000 },
+  expect: { timeout: 10_000 },
 
   reporter: [
-    ['html', { outputFolder: 'playwright-report', open: 'never' }],
-    [
-      'allure-playwright',
-      {
-        outputFolder: 'allure-results',
-        suiteTitle: false,
-        environmentInfo: {
-          ENV,
-          BASE_URL,
-          BRANCH: process.env.GITHUB_REF_NAME ?? 'local',
-        },
-      },
-    ],
+    ['html', { outputFolder: FRAMEWORK_EVIDENCE.htmlReport, open: 'never' }],
+    ['json', { outputFile: FRAMEWORK_EVIDENCE.jsonReport }],
+    ['junit', { outputFile: FRAMEWORK_EVIDENCE.junitReport }],
     ['list'],
   ],
 
   use: {
     baseURL: BASE_URL,
-    trace: 'retain-on-failure',
+    trace,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     actionTimeout: 10_000,
-    navigationTimeout: 30_000,
+    navigationTimeout: 15_000,
+    testIdAttribute,
   },
 
   projects: [
     {
-      name: 'setup',
-      testMatch: /.*\.setup\.ts/,
-    },
-    {
       name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: 'storage/auth/user-admin.json',
-      },
-      dependencies: ['setup'],
-    },
-    {
-      name: 'firefox',
-      use: {
-        ...devices['Desktop Firefox'],
-        storageState: 'storage/auth/user-admin.json',
-      },
-      dependencies: ['setup'],
-    },
-    {
-      name: 'api',
-      testMatch: /.*\.api\.spec\.ts/,
-      use: { baseURL: API_BASE_URL },
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
 
-  outputDir: 'test-results',
+  outputDir: FRAMEWORK_EVIDENCE.outputDir,
 });

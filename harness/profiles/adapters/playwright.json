@@ -1,0 +1,36 @@
+{
+  "adapter": "playwright",
+  "version": "1.0.0",
+  "policy": {
+    "defaultMode": "plan",
+    "effortLevel": "high",
+    "gateRepairLimit": 3,
+    "testIdAttribute": "data-testid",
+    "auth": {
+      "strategy": "storage-state"
+    },
+    "testData": {
+      "strategy": "fresh"
+    },
+    "credentials": {
+      "source": "ci-secret"
+    },
+    "locatorPriority": ["role", "label", "text", "testId", "css", "xpath"],
+    "permissions": {
+      "allow": [
+        "Bash(npm test*)",
+        "Bash(npm run test*)",
+        "Bash(npm run report*)",
+        "Bash(npm run lint*)",
+        "Bash(npm run format*)",
+        "Bash(npm run check:*)",
+        "Bash(npm run harness:*)",
+        "Bash(npx playwright*)",
+        "Bash(npx tsc --noEmit*)",
+        "Bash(grep -r* playwright/*)",
+        "Bash(find playwright/*)"
+      ],
+      "deny": ["WebSearch"]
+    }
+  }
+}
