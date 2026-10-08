@@ -2,10 +2,10 @@ import type { Page, APIRequestContext } from '@playwright/test';
 import { API_ENDPOINTS } from '../../../configs/app/routes.js';
 
 export interface ApiHelpers {
-  get<T>(endpoint: keyof typeof API_ENDPOINTS, params?: Record<string, string>): Promise<T>;
-  post<T>(endpoint: keyof typeof API_ENDPOINTS, body: unknown): Promise<T>;
-  put<T>(endpoint: keyof typeof API_ENDPOINTS, body: unknown): Promise<T>;
-  delete(endpoint: keyof typeof API_ENDPOINTS): Promise<void>;
+  get<T>(endpoint: string, params?: Record<string, string>): Promise<T>;
+  post<T>(endpoint: string, body: unknown): Promise<T>;
+  put<T>(endpoint: string, body: unknown): Promise<T>;
+  delete(endpoint: string): Promise<void>;
   waitForResponse(urlPattern: string | RegExp): Promise<void>;
 }
 
@@ -29,9 +29,13 @@ export function createApiHelpers(page: Page, request: APIRequestContext): ApiHel
     return response.json() as Promise<T>;
   }
 
+  function resolveEndpoint(endpoint: string): string {
+    return API_ENDPOINTS[endpoint] ?? endpoint;
+  }
+
   return {
-    async get<T>(endpoint, params?) {
-      let path = API_ENDPOINTS[endpoint] as string;
+    async get<T>(endpoint: string, params?: Record<string, string>) {
+      let path = resolveEndpoint(endpoint);
       if (params) {
         const qs = new URLSearchParams(params).toString();
         path = `${path}?${qs}`;
@@ -39,16 +43,16 @@ export function createApiHelpers(page: Page, request: APIRequestContext): ApiHel
       return callApi<T>('GET', path);
     },
 
-    async post<T>(endpoint, body) {
-      return callApi<T>('POST', API_ENDPOINTS[endpoint] as string, body);
+    async post<T>(endpoint: string, body: unknown) {
+      return callApi<T>('POST', resolveEndpoint(endpoint), body);
     },
 
-    async put<T>(endpoint, body) {
-      return callApi<T>('PUT', API_ENDPOINTS[endpoint] as string, body);
+    async put<T>(endpoint: string, body: unknown) {
+      return callApi<T>('PUT', resolveEndpoint(endpoint), body);
     },
 
-    async delete(endpoint) {
-      await callApi('DELETE', API_ENDPOINTS[endpoint] as string);
+    async delete(endpoint: string) {
+      await callApi('DELETE', resolveEndpoint(endpoint));
     },
 
     async waitForResponse(urlPattern) {

@@ -1,5 +1,8 @@
 import { test as base, expect } from '@playwright/test';
-import { createNavigationHelpers, type NavigationHelpers } from '../support/helpers/common/navigation.helpers.js';
+import {
+  createNavigationHelpers,
+  type NavigationHelpers,
+} from '../support/helpers/common/navigation.helpers.js';
 import { createUiHelpers, type UiHelpers } from '../support/helpers/common/ui.helpers.js';
 import { createApiHelpers, type ApiHelpers } from '../support/helpers/common/api.helpers.js';
 import { createHarHelpers, type HarHelpers } from '../support/helpers/common/har.helpers.js';

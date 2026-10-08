@@ -10,7 +10,10 @@ export interface BoundQuery {
 }
 
 export interface DbHelpers {
-  query<T = Record<string, unknown>>(entry: QueryEntry, args: Record<string, unknown>): Promise<T[]>;
+  query<T = Record<string, unknown>>(
+    entry: QueryEntry,
+    args: Record<string, unknown>,
+  ): Promise<T[]>;
   row<T = Record<string, unknown>>(entry: QueryEntry, args: Record<string, unknown>): Promise<T>;
   count(entry: QueryEntry, args: Record<string, unknown>): Promise<number>;
 }
@@ -33,12 +36,12 @@ export function createDbHelpers(
   executeQuery: (sql: string, values: unknown[]) => Promise<Record<string, unknown>[]>,
 ): DbHelpers {
   return {
-    async query<T>(entry, args) {
+    async query<T>(entry: QueryEntry, args: Record<string, unknown>) {
       const { sql, values } = bindQuery(entry, args);
       return executeQuery(sql, values) as Promise<T[]>;
     },
 
-    async row<T>(entry, args) {
+    async row<T>(entry: QueryEntry, args: Record<string, unknown>) {
       const { sql, values } = bindQuery(entry, args);
       const rows = await executeQuery(sql, values);
       if (rows.length === 0) throw new Error('row() expected exactly one row, got 0');
@@ -46,7 +49,7 @@ export function createDbHelpers(
       return rows[0] as T;
     },
 
-    async count(entry, args) {
+    async count(entry: QueryEntry, args: Record<string, unknown>) {
       const { sql, values } = bindQuery(entry, args);
       const rows = await executeQuery(sql, values);
       const raw = Object.values(rows[0] ?? {})[0];

@@ -21,12 +21,12 @@ export function createUiHelpers(page: Page): UiHelpers {
     async dismissToast() {
       const selector = Object.values(FEEDBACK_SELECTORS)[0] as string | undefined;
       if (!selector) return;
-      const close = page.locator(selector).locator('[data-testid="toast-close"]');
+      const close = page.locator(selector).getByTestId('toast-close');
       if (await close.isVisible()) await close.click();
     },
 
     async waitForLoader() {
-      const loader = page.locator('[data-testid="loading-spinner"]');
+      const loader = page.getByTestId('loading-spinner');
       await loader.waitFor({ state: 'hidden' }).catch(() => {});
     },
 

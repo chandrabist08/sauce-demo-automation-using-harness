@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { ROUTES } from '../../../configs/app/routes.js';
 
 export interface NavigationHelpers {
-  goTo(route: keyof typeof ROUTES): Promise<void>;
+  goTo(route: string): Promise<void>;
   goToUrl(url: string): Promise<void>;
   waitForNavigation(): Promise<void>;
   getCurrentPath(): string;
@@ -10,8 +10,8 @@ export interface NavigationHelpers {
 
 export function createNavigationHelpers(page: Page): NavigationHelpers {
   return {
-    async goTo(route) {
-      await page.goto(ROUTES[route] as string);
+    async goTo(route: string) {
+      await page.goto(ROUTES[route] ?? route);
     },
 
     async goToUrl(url) {
@@ -23,7 +23,11 @@ export function createNavigationHelpers(page: Page): NavigationHelpers {
     },
 
     getCurrentPath() {
-      return new URL(page.url()).pathname;
+      try {
+        return new URL(page.url()).pathname;
+      } catch {
+        return page.url();
+      }
     },
   };
 }

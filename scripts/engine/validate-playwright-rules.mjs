@@ -7,9 +7,33 @@ const root = process.cwd();
 // Load patterns from harness
 const { BLOCK_PATTERNS } = await import('../../harness/patterns.mjs');
 
+// Rules that only apply to test specs, not framework infrastructure
+const SPEC_ONLY_RULES = new Set([
+  'base-fixture-import',  // fixture/helpers legitimately import from @playwright/test
+  'smoke-read-only',
+  'focused-or-quarantined-test',
+  'one-requirement-tag',
+]);
+
+// Files excluded from all rule scanning (templates, examples, fixture core)
+function isExcluded(filePath) {
+  const normalized = filePath.replace(/\\/g, '/');
+  return (
+    normalized.includes('/_template/') ||
+    normalized.includes('.example.') ||
+    normalized.includes('/fixtures/base.fixture.ts')
+  );
+}
+
+function isSpecFile(filePath) {
+  return filePath.replace(/\\/g, '/').includes('/tests/');
+}
+
 function scanFile(filePath, content) {
+  if (isExcluded(filePath)) return [];
   const violations = [];
   for (const [rule, { pattern, message }] of Object.entries(BLOCK_PATTERNS)) {
+    if (SPEC_ONLY_RULES.has(rule) && !isSpecFile(filePath)) continue;
     if (pattern.test(content)) {
       violations.push({ rule, file: filePath, message });
     }
