@@ -1,6 +1,6 @@
 # Playwright Harness
 
-A production-grade Playwright TypeScript test harness boilerplate for Web UI automation. Built for QA teams with Page Object Model, centralized fixtures, API helpers, and dual HTML + Allure reporting.
+A production-grade Playwright TypeScript test harness boilerplate using a **helper-first architecture**. Built for QA teams and AI-assisted test generation.
 
 ---
 
@@ -13,24 +13,57 @@ A production-grade Playwright TypeScript test harness boilerplate for Web UI aut
 
 ---
 
+## Architecture
+
+```
+Config → Helpers → Fixture → Tests
+```
+
+| Layer | Path | Responsibility |
+|-------|------|----------------|
+| Config | `playwright/configs/` | Selectors, routes, queries — no logic |
+| Helpers | `playwright/support/helpers/` | Flat action functions — no classes |
+| Fixture | `playwright/fixtures/base.fixture.ts` | Injects helpers into tests |
+| Tests | `playwright/tests/` | Thin orchestration — one behaviour per test |
+
+---
+
 ## Project Structure
 
 ```
-├── .claude/                    # Claude Code project config (agents, hooks, skills)
-├── .github/workflows/          # GitHub Actions CI pipeline
-├── src/
-│   ├── api/                    # API helper layer (ApiClient, AuthApi, UsersApi)
-│   ├── config/                 # Typed env loader and test data constants
-│   ├── fixtures/               # Playwright fixture extensions (base, auth)
-│   ├── pages/                  # Page Object Model (BasePage, LoginPage, etc.)
-│   ├── types/                  # Shared TypeScript interfaces
-│   └── utils/                  # Allure helpers, date, random utilities
-├── tests/
-│   ├── auth/                   # Auth specs + global setup
-│   ├── dashboard/              # Dashboard specs
-│   └── smoke/                  # Smoke suite
-├── test-data/                  # Static JSON test data
-├── storage/auth/               # Saved auth state (gitignored)
+├── .claude/                        # Claude Code config (agents, hooks, skills, settings)
+│   ├── CLAUDE.md                   # Project conventions enforced on every AI response
+│   ├── settings.json               # Hook wiring + permissions
+│   ├── agents/                     # Claude Code agent definitions
+│   ├── hooks/                      # Rule engine (L1 + L2 + wiring)
+│   └── skills/new-page/            # /new-page scaffold skill
+├── .github/
+│   ├── copilot-instructions.md     # Copilot gets the same 14 rules as Claude
+│   └── workflows/
+│       ├── playwright.yml          # Main CI pipeline
+│       ├── playwright-rules.yml    # Rule engine gate on PRs
+│       └── locator-strategy.yml    # Locator quality gate on PRs
+├── evidence/                       # Test results and requirements traceability
+│   ├── requirements.json           # Approved requirements (populated by GATHER agent)
+│   └── reports/                    # HTML, JUnit, JSON reports
+├── harness/
+│   ├── agents/                     # Agent persona definitions
+│   ├── profiles/                   # Project + adapter profiles
+│   └── patterns.mjs                # Architecture pattern helpers
+├── playwright/
+│   ├── configs/
+│   │   ├── app/routes.ts           # ROUTES + API_ENDPOINTS registry
+│   │   ├── ui/                     # Selector constants
+│   │   └── db/                     # Frozen SQL query entries
+│   ├── fixtures/
+│   │   └── base.fixture.ts         # nav / ui / api / har / evidence fixtures
+│   ├── support/
+│   │   ├── helpers/common/         # nav, ui, api, har, db helpers
+│   │   └── setup/                  # storageState auth setup
+│   └── tests/                      # Spec files (empty until GATHER → BUILD)
+├── scripts/
+│   └── engine/                     # CLI rule validator, evidence builder, sync
+├── harness.config.json             # Single source of truth for rules + agents
 ├── playwright.config.ts
 ├── tsconfig.json
 └── package.json
@@ -58,33 +91,35 @@ npx playwright install
 cp .env.example .env
 ```
 
-Edit `.env` with your target app values:
+Edit `.env`:
 
 ```env
-ENV=staging
+ENV=qa
 BASE_URL=https://your-app.com
 API_BASE_URL=https://your-api.com
-ADMIN_EMAIL=admin@yourapp.com
-ADMIN_PASSWORD=yourpassword
 ```
 
-### 4. Run tests
+### 4. Verify the harness
 
 ```bash
-# Smoke suite (fast, critical path)
+npm run verify
+```
+
+This runs the full pipeline: type-check → rule scan → format check → tests → evidence build.
+
+### 5. Run tests
+
+```bash
+# All tests
+npm test
+
+# Smoke suite only
 npm run test:smoke
 
-# Full regression
-npm run test:regression
-
-# Specific browser
-npm run test:chromium
-npm run test:firefox
-
-# Headed mode (watch the browser)
+# Headed mode
 npm run test:headed
 
-# Interactive UI mode
+# UI mode
 npm run test:ui
 ```
 
@@ -92,103 +127,103 @@ npm run test:ui
 
 ## Reporting
 
-### Playwright HTML Report
 ```bash
+# Playwright HTML report
 npm run report:html
-```
 
-### Allure Report
-```bash
+# Allure report
 npm run report:allure:serve
 ```
 
-Allure reports are automatically generated and deployed to GitHub Pages on every push to `main`.
+---
+
+## 14 Enforced Rules
+
+| # | Rule | Enforcement |
+|---|------|-------------|
+| 1 | no-hard-wait | Hook + CI |
+| 2 | no-hardcoded-selector | Hook + CI |
+| 3 | no-hardcoded-route | Hook + CI |
+| 4 | no-page-object | Hook + CI |
+| 5 | no-credential-literal | Hook + CI |
+| 6 | storage-state-auth | Hook + CI |
+| 7 | base-fixture-import | Hook + CI |
+| 8 | smoke-read-only | Hook + CI |
+| 9 | no-sql-literal | Hook + CI |
+| 10 | focused-or-quarantined-test | Hook + CI |
+| 11 | locator-priority | QA gate |
+| 12 | narrow-before-index | QA gate |
+| 13 | search-before-create | QA gate |
+| 14 | one-requirement-tag | Hook + CI |
+
+Rules are defined in `harness.config.json` and enforced by a 3-tier engine:
+- **L1** `.claude/hooks/rule-engine.mjs` — framework-neutral scan mechanism
+- **L2** `.claude/hooks/playwright.patterns.mjs` — Playwright-specific rule table
+- **Wiring** `.claude/hooks/shared-rules.mjs` — composes L1 + L2
 
 ---
 
-## Architecture
-
-### Layer interaction flow
+## Lifecycle
 
 ```
-tests/*.spec.ts
-  └── src/fixtures/index.ts       ← single import point for test + expect
-        ├── auth.fixture.ts       ← pre-authenticated session via API
-        └── base.fixture.ts       ← injects POMs and API helpers
-              ├── src/pages/**    ← Page Object Model (never raw locators in tests)
-              └── src/api/**      ← API helpers (never raw fetch in tests)
-                    └── src/config/env.ts   ← typed env vars
+GATHER → approve requirements → DISCOVER → BUILD → EVALUATE →
+  BLOCK: BUILD repairs (max 3) → EVALUATE again
+  PASS:  SHIP (pr-creator) → CI (npm run verify)
 ```
 
-### Key conventions
+## Agents
 
-| Rule | Detail |
-|------|--------|
-| Imports | Always import `test` and `expect` from `src/fixtures/index` |
-| Locators | Use `data-testid` attributes only |
-| Page Objects | Extend `BasePage`; locators as `private readonly` properties |
-| API helpers | Accept `ApiClient`, never raw `APIRequestContext` |
-| Test tags | Every test must have `@smoke` or `@regression` |
-| Allure steps | Wrap every logical block with `step()` from `src/utils/allure-helpers` |
-| Env vars | Access via `src/config/env.ts`, never raw `process.env` |
+| Agent | Role |
+|-------|------|
+| `project-bootstrapper` | GATHER — captures requirements into `evidence/requirements.json` |
+| `playwright-cli` | DISCOVER — browser discovery and codegen |
+| `playwright-test-automation` | BUILD — writes helper-first specs from requirements |
+| `pre-merge-qa-gate` | EVALUATE — QA verdict (read-only, cannot edit files) |
+| `playwright-bug-hunter` | DIAGNOSE — traces failures and suggests fixes |
+| `pr-creator` | SHIP — opens PR after gate passes |
+| `workflow-maintainer` | MAINTAIN — keeps generated files in sync |
 
 ---
 
-## Adding a New Feature
+## Writing Tests
 
-Use the built-in Claude Code skill:
+Every test must follow this structure:
 
-```
-/new-page
-```
+```typescript
+import { test, expect } from '../../fixtures/base.fixture.js';
 
-This scaffolds a Page Object and matching spec file by asking for the feature name and key actions.
-
-Or create manually:
-
-```
-src/pages/<feature>/<name>.page.ts     ← Page Object
-src/api/<resource>.api.ts              ← API helper
-tests/<feature>/<name>.spec.ts         ← Spec file
+test('[REQ-ID] what the user can do', {
+  tag: ['@REQ-ID', '@smoke', '@P1'],
+}, async ({ nav, ui, page }) => {
+  await nav.goTo('home');
+  await ui.clickButton('Submit');
+  await expect(page.getByRole('heading')).toHaveText('Done');
+});
 ```
 
----
-
-## CI/CD
-
-GitHub Actions runs on every push and pull request to `main` and `develop`:
-
-- Parallel runs on Chromium and Firefox
-- Auth state cached via `global.setup.ts`
-- Allure report deployed to GitHub Pages
-- Playwright HTML report uploaded as artifact
-
-### Required GitHub Secrets
-
-| Secret | Description |
-|--------|-------------|
-| `STAGING_BASE_URL` | Staging app URL |
-| `STAGING_API_BASE_URL` | Staging API URL |
-| `STAGING_ADMIN_EMAIL` | Admin email |
-| `STAGING_ADMIN_PASSWORD` | Admin password |
+**Rules:**
+- Import `test`/`expect` from `base.fixture` — never from `@playwright/test`
+- Title must start with `[REQUIREMENT-ID]`
+- Tags: exactly 1 requirement id + 1 type (`@smoke`/`@regression`) + 1 priority (`@P0`/`@P1`/`@P2`)
+- Use `nav`/`ui`/`api`/`har` fixtures — never call `page.locator()` directly in specs
 
 ---
 
 ## Claude Code Integration
 
-This project ships with a `.claude/` directory pre-configured for Claude Code:
+Open this project in Claude Code — everything is pre-configured:
+
+```bash
+claude .
+```
 
 | Resource | Purpose |
 |----------|---------|
-| `CLAUDE.md` | Project conventions enforced on every Claude response |
-| `settings.json` | Pre-approved commands (no permission prompts) |
-| `agents/test-generator` | Generates spec files from a Page Object |
-| `agents/pom-creator` | Scaffolds new Page Objects |
-| `agents/debug-failure` | Diagnoses test failures from traces |
-| `hooks/hooks.js` | Warns on incorrect import patterns |
-| `/new-page` skill | Scaffold POM + spec in one command |
-| `/run-smoke` skill | Run smoke suite and open report |
-| `/update-selectors` skill | Audit data-testid coverage |
+| `CLAUDE.md` | Helper-first conventions on every response |
+| `settings.json` | Hook events wired, permissions set, effort level high |
+| Hook rules | Violations blocked at write time — no bad code lands |
+| `/new-page` | Scaffold a new helper + spec skeleton |
+| Agents | Full GATHER → SHIP lifecycle covered |
 
 ---
 
@@ -201,10 +236,27 @@ This project ships with a `.claude/` directory pre-configured for Claude Code:
 | `npm run test:regression` | Run `@regression` tagged tests |
 | `npm run test:headed` | Run with visible browser |
 | `npm run test:ui` | Open Playwright UI mode |
-| `npm run test:chromium` | Chromium only |
-| `npm run test:firefox` | Firefox only |
+| `npm run verify` | Full harness verification pipeline |
 | `npm run report:html` | Open HTML report |
 | `npm run report:allure:serve` | Open Allure report |
-| `npm run lint` | Lint all TypeScript files |
-| `npm run typecheck` | TypeScript type check |
-| `npm run clean` | Remove all report artifacts |
+| `npm run check:rules` | Run rule engine against all files |
+| `npm run harness:check` | Validate harness config |
+| `npm run lint` | Lint TypeScript files |
+| `npm run format` | Format with Prettier |
+
+---
+
+## CI/CD
+
+GitHub Actions runs on every push and pull request:
+
+- **playwright.yml** — full test suite, uploads HTML + Allure reports as artifacts
+- **playwright-rules.yml** — rule engine scans changed files, blocks violation PRs
+- **locator-strategy.yml** — enforces locator priority (`getByRole` > `getByTestId`)
+
+### Required Secrets
+
+| Secret | Description |
+|--------|-------------|
+| `BASE_URL` | App URL for the target environment |
+| `API_BASE_URL` | API base URL |
