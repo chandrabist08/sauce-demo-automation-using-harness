@@ -20,6 +20,12 @@
     "check:rules": "node scripts/engine/validate-playwright-rules.mjs --all",
     "check:requirements": "node scripts/check-requirement-consistency.mjs",
     "evidence:build": "node scripts/evidence.mjs",
+    "evidence:effort": "node scripts/evidence.mjs --effort",
+    "check:ddt-fixtures": "echo 'DDT fixture check: no DDT specs yet.'",
+    "check:locator-strategy": "node scripts/check-locator-strategy.mjs",
+    "check:doc-impact": "node scripts/check-doc-impact.mjs",
+    "harness:lock": "node scripts/engine/lock-profile.mjs",
+    "harness:compose": "node harness/profiles/bin/compose-harness-config.mjs",
     "verify": "npm run harness:check && npm run harness:ready && npm run harness:test && npm run harness:format:check && npm run check:rules && npm run check:requirements && tsc --noEmit && npm test && npm run evidence:build",
     "bootstrap": "node scripts/bootstrap.js"
   },

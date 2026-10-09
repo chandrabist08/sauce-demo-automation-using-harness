@@ -2,9 +2,16 @@
   "framework": "playwright",
   "pattern": "helper-first",
   "architecture": "Config → Helpers → Tests",
+  "project": {
+    "testRoot": "playwright",
+    "configRoot": "playwright/configs",
+    "commandRoot": "playwright/support/helpers/common",
+    "specGlob": "playwright/tests/**/*.spec.ts",
+    "pattern": "helper-first"
+  },
   "testRoot": "playwright",
   "configRoot": "playwright/configs",
-  "commandRoot": "playwright/support/helpers",
+  "commandRoot": "playwright/support/helpers/common",
   "specGlob": "playwright/tests/**/*.spec.ts",
   "effortLevel": "high",
   "gateRepairLimit": 3,

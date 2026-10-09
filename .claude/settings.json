@@ -1,17 +1,76 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(npm run test:smoke)",
-      "Bash(npm run test:headed)",
-      "Bash(npm run lint)",
-      "Bash(npm run lint:fix)",
-      "Bash(npm run typecheck)",
-      "Bash(npm run format)",
-      "Bash(npx playwright show-report)",
-      "Bash(npm run report:allure:serve)"
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "_generated": "From harness.config.json by scripts/engine/sync.mjs. Do not edit.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const p=require('node:path'),u=require('node:url');const r=process.env.CLAUDE_PROJECT_DIR||process.cwd();import(u.pathToFileURL(p.join(r,'.claude','hooks',process.argv[1])).href)\" \"harness-config-gate.mjs\""
+          },
+          {
+            "type": "command",
+            "command": "node -e \"const p=require('node:path'),u=require('node:url');const r=process.env.CLAUDE_PROJECT_DIR||process.cwd();import(u.pathToFileURL(p.join(r,'.claude','hooks',process.argv[1])).href)\" \"prompt-duplication-guard.mjs\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const p=require('node:path'),u=require('node:url');const r=process.env.CLAUDE_PROJECT_DIR||process.cwd();import(u.pathToFileURL(p.join(r,'.claude','hooks',process.argv[1])).href)\" \"pre-validate-playwright-rules.mjs\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const p=require('node:path'),u=require('node:url');const r=process.env.CLAUDE_PROJECT_DIR||process.cwd();import(u.pathToFileURL(p.join(r,'.claude','hooks',process.argv[1])).href)\" \"validate-playwright-rules.mjs\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const p=require('node:path'),u=require('node:url');const r=process.env.CLAUDE_PROJECT_DIR||process.cwd();import(u.pathToFileURL(p.join(r,'.claude','hooks',process.argv[1])).href)\" \"session-end-reminder.mjs\""
+          }
+        ]
+      }
     ]
   },
+  "effortLevel": "high",
+  "alwaysThinkingEnabled": true,
+  "autoMemoryEnabled": true,
+  "permissions": {
+    "defaultMode": "plan",
+    "allow": [
+      "Bash(npm test*)",
+      "Bash(npm run test*)",
+      "Bash(npm run report*)",
+      "Bash(npm run lint*)",
+      "Bash(npm run format*)",
+      "Bash(npm run check:*)",
+      "Bash(npm run harness:*)",
+      "Bash(npx playwright*)",
+      "Bash(npx tsc --noEmit*)",
+      "Bash(grep -r* playwright/*)",
+      "Bash(find playwright/*)"
+    ],
+    "deny": ["WebSearch"]
+  },
   "env": {
-    "ENV": "dev"
+    "ENV": "qa",
+    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "0"
   }
 }
