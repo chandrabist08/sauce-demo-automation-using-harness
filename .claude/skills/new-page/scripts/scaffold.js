@@ -1,19 +1,21 @@
 /**
- * Derives file paths from feature and page name inputs.
+ * Derives file paths from module name input.
  * Used by Claude to determine where to write generated files.
  */
-function getPaths(featureName, pageName) {
-  const kebab = (str) => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-  const pascal = (str) => str.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join('');
+function getPaths(moduleName) {
+  const kebab = (str) => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase().replace(/\s+/g, '-');
+  const pascal = (str) => str.split(/[-\s]/).map((w) => w[0].toUpperCase() + w.slice(1)).join('');
 
-  const feature = kebab(featureName);
-  const page = kebab(pageName);
-  const className = pascal(page) + 'Page';
+  const module = kebab(moduleName);
+  const Module = pascal(moduleName);
 
   return {
-    pageObject: `src/pages/${feature}/${page}.page.ts`,
-    spec: `tests/${feature}/${page}.spec.ts`,
-    className,
+    uiConfig: `playwright/configs/ui/modules/${module}/${module}.ui.ts`,
+    helper: `playwright/support/helpers/domain/${module}.helpers.ts`,
+    smokeSpec: `playwright/tests/${module}/smoke/${module}-smoke.spec.ts`,
+    fixture: `playwright/fixtures/base.fixture.ts`,
+    Module,
+    module,
   };
 }
 

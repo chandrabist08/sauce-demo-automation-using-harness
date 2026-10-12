@@ -1,22 +1,11 @@
-import { test, expect } from '../../src/fixtures/index';
-import { setFeature, setStory, step } from '../../src/utils/allure-helpers';
+import { test, expect } from '../../../fixtures/base.fixture.js';
 
-test.describe('__FeatureName__', () => {
-  test('@smoke __HappyPathDescription__', async ({ /* inject page fixture */ }) => {
-    await setFeature('__FeatureName__');
-    await setStory('__StoryName__');
+test('[[REQUIREMENT-ID]] [observable behavior and expected result]', {
+  tag: ['@[REQUIREMENT-ID]', '@smoke', '@P1'],
+}, async ({ page }) => {
+  // Arrange
 
-    await step('Navigate to page', () => { /* page.goto() */ });
-    await step('Perform action', () => { /* action */ });
-    await step('Assert result', () => { /* assertion */ });
-  });
+  // Act
 
-  test('@regression __EdgeCaseDescription__', async ({ /* inject page fixture */ }) => {
-    await setFeature('__FeatureName__');
-    await setStory('__EdgeCaseName__');
-
-    await step('Navigate to page', () => { /* page.goto() */ });
-    await step('Perform invalid action', () => { /* action */ });
-    await step('Assert error state', () => { /* assertion */ });
-  });
+  // Assert
 });

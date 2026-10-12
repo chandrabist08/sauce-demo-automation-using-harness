@@ -1,25 +1,29 @@
 # /new-page
 
-Scaffold a new Page Object and matching Playwright spec file for a given feature.
+Scaffold a new helper module and matching Playwright spec skeleton for a given feature.
 
 ## When to load supporting files
 
-- Always load `references/conventions.md` before generating any file — it contains naming rules and import conventions
-- Load `scripts/scaffold.js` if you need to determine file paths programmatically
-- Load `assets/page-template.ts` as the base template for the Page Object
-- Load `assets/spec-template.ts` as the base template for the spec file
+- Always load `references/conventions.md` before generating any file
+- Load `scripts/scaffold.js` to determine file paths
+- Load `assets/helper-template.ts` as the base for the helper
+- Load `assets/spec-template.ts` as the base for the spec
 
 ## Steps
 
 1. Ask the user for:
-   - Feature name (e.g. `billing`)
-   - Page name (e.g. `invoice-list`)
-   - Key user actions on this page (e.g. "click create button, search invoices, delete invoice")
+   - Module name (e.g. `products`)
+   - Key user actions (e.g. "visit list, search, create product")
+   - Requirement id (e.g. `PAY-PRODUCTS-001`)
 
-2. Read `references/conventions.md` for naming and import rules
+2. Read `references/conventions.md`
 
-3. Generate `src/pages/<feature>/<page-name>.page.ts` using `assets/page-template.ts` as base
+3. Generate `playwright/configs/ui/modules/<module>/<module>.ui.ts` — selector constants
 
-4. Generate `tests/<feature>/<page-name>.spec.ts` using `assets/spec-template.ts` as base
+4. Generate `playwright/support/helpers/domain/<module>.helpers.ts` using `assets/helper-template.ts`
 
-5. Report both file paths created
+5. Generate `playwright/tests/<module>/smoke/<module>-smoke.spec.ts` using `assets/spec-template.ts`
+
+6. Remind the user to register the new helper in `playwright/fixtures/base.fixture.ts`
+
+7. Report all file paths created

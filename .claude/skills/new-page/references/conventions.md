@@ -1,26 +1,34 @@
-# Naming & Import Conventions
+# Helper-First Conventions
 
 ## File naming
-- Page Object: `kebab-case.page.ts` under `src/pages/<feature>/`
-- Spec file: `kebab-case.spec.ts` under `tests/<feature>/`
+- UI config: `kebab-case.ui.ts` under `playwright/configs/ui/modules/<module>/`
+- Helper: `kebab-case.helpers.ts` under `playwright/support/helpers/domain/`
+- Spec: `kebab-case.spec.ts` under `playwright/tests/<module>/<tier>/`
 
-## Class naming
-- Page Object class: `PascalCase` + `Page` suffix (e.g. `InvoiceListPage`)
-- Always extend `BasePage` from `src/pages/base.page.ts`
-
-## Locators
-- Always use `this.getByTestId('...')` — never CSS class, XPath, or text selectors
-- Declare as `private readonly camelCase` properties on the class
+## Helper structure
+- Factory function: `createModuleHelpers(page: Page): ModuleHelpers`
+- Interface: `ModuleHelpers` with method signatures
+- Methods: verb-first (`visitList`, `assertProductVisible`, `createProduct`)
+- No classes, no `this`, no BasePage
 
 ## Imports in spec files
-- Always import `test` and `expect` from `../../src/fixtures/index`
-- Always import `setFeature`, `setStory`, `step` from `../../src/utils/allure-helpers`
+- Always import `test` and `expect` from `../../../fixtures/base.fixture.js`
 - Never import directly from `@playwright/test`
 
-## Test tags
-- Every test must have at least one tag: `@smoke` or `@regression`
-- Format: `test('@smoke Description of what the user does', ...)`
+## Test structure
+- Title: `[REQUIREMENT-ID] observable behavior and expected result`
+- Tags: exactly one requirement id + `@smoke` or `@regression` + `@P0`/`@P1`/`@P2`
+- Pattern: Arrange → Act → Assert
+- One behavior per test
 
-## Allure metadata
-- Every test must call `setFeature()` and `setStory()`
-- Every logical action must be wrapped in `step()`
+## Locator priority
+1. `getByRole('button', { name: '...' })`
+2. `getByLabel('...')`
+3. `getByText('...')`
+4. `getByTestId('...')`
+5. CSS/XPath — last resort with comment explaining why
+
+## Selectors
+- All selector strings belong in `playwright/configs/ui/modules/<module>/<module>.ui.ts`
+- Use `as const` on every config object
+- Never hardcode a selector string in a helper or spec
