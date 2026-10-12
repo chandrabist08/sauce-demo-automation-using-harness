@@ -222,8 +222,46 @@ claude .
 | `CLAUDE.md` | Helper-first conventions on every response |
 | `settings.json` | Hook events wired, permissions set, effort level high |
 | Hook rules | Violations blocked at write time — no bad code lands |
-| `/new-page` | Scaffold a new helper + spec skeleton |
-| Agents | Full GATHER → SHIP lifecycle covered |
+| `/new-page` skill | Scaffolds UI config + helper + spec for a new module |
+| 7 agents | Full GATHER → SHIP lifecycle covered |
+| `.github/copilot-instructions.md` | Copilot gets the same 14 rules as Claude |
+
+### `/new-page` skill
+
+Invoke with `/new-page` in Claude Code. It asks for a module name and key actions, then generates three files:
+
+1. `playwright/configs/ui/modules/<module>/<module>.ui.ts` — selector constants
+2. `playwright/support/helpers/domain/<module>.helpers.ts` — factory function + interface
+3. `playwright/tests/<module>/smoke/<module>-smoke.spec.ts` — spec skeleton with requirement tag format
+
+The skill is self-contained under `.claude/skills/new-page/`:
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | Entry point — steps Claude follows |
+| `assets/helper-template.ts` | Helper factory function template |
+| `assets/spec-template.ts` | Spec skeleton with correct import and tag format |
+| `references/conventions.md` | Naming, locator, and import rules |
+| `scripts/scaffold.js` | Derives file paths from module name |
+
+---
+
+## MCP Browser Integration
+
+`.vscode/mcp.json` wires the Playwright MCP server into VS Code, giving Claude Code and Copilot control of a real Chromium browser:
+
+```json
+{
+  "servers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--browser", "chromium"]
+    }
+  }
+}
+```
+
+This powers the DISCOVER phase — the `playwright-cli` agent can navigate pages, take snapshots, and capture selectors interactively without leaving the editor. No separate codegen session needed.
 
 ---
 
