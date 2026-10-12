@@ -67,7 +67,13 @@
       "Bash(grep -r* playwright/*)",
       "Bash(find playwright/*)"
     ],
-    "deny": ["WebSearch"]
+    "deny": [
+        "WebSearch",
+        "Bash(git push origin master*)",
+        "Bash(git push * master*)",
+        "Bash(git push --force*)",
+        "Bash(git push -f*)"
+          ]
   },
   "env": {
     "ENV": "qa",
