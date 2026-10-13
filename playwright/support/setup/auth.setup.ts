@@ -12,9 +12,13 @@ setup('authenticate', async ({ page }) => {
   await page.goto(ROUTES.login);
 
   await page.locator(NAVIGATION_SELECTORS.login.usernameInput).click({ clickCount: 3 });
-  await page.locator(NAVIGATION_SELECTORS.login.usernameInput).pressSequentially(process.env.USERNAME!, { delay: 50 });
+  await page
+    .locator(NAVIGATION_SELECTORS.login.usernameInput)
+    .pressSequentially(process.env.USERNAME!, { delay: 50 });
   await page.locator(NAVIGATION_SELECTORS.login.passwordInput).click({ clickCount: 3 });
-  await page.locator(NAVIGATION_SELECTORS.login.passwordInput).pressSequentially(process.env.PASSWORD!, { delay: 50 });
+  await page
+    .locator(NAVIGATION_SELECTORS.login.passwordInput)
+    .pressSequentially(process.env.PASSWORD!, { delay: 50 });
   await page.locator(NAVIGATION_SELECTORS.login.loginButton).click();
 
   await page.waitForURL('**' + ROUTES.inventory);

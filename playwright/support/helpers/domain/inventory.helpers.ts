@@ -19,7 +19,7 @@ export function createInventoryHelpers(page: Page): InventoryHelpers {
 
     async getItemPrices() {
       const texts = await page.locator(NAVIGATION_SELECTORS.inventory.itemPrice).allTextContents();
-      return texts.map(t => parseFloat(t.replace('$', '')));
+      return texts.map((t) => parseFloat(t.replace('$', '')));
     },
   };
 }
