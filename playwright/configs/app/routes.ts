@@ -1,5 +1,8 @@
 // Filled after DISCOVER agent runs — do not add routes manually
-export const ROUTES: Record<string, string> = {};
+export const ROUTES: Record<string, string> = {
+    login: "/",
+    inventory: "/inventory.html",
+};
 
 // Filled after DISCOVER agent runs — do not add endpoints manually
 export const API_ENDPOINTS: Record<string, string> = {};

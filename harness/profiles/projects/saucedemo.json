@@ -1,0 +1,21 @@
+{
+  "project": "saucedemo",
+  "version": "1.0.0",
+  "locked": false,
+  "framework": "playwright",
+  "pattern": "helper-first",
+  "architecture": "Config → Helpers → Tests",
+  "testRoot": "playwright",
+  "configRoot": "playwright/configs",
+  "commandRoot": "playwright/support/helpers",
+  "specGlob": "playwright/tests/**/*.spec.ts",
+  "adapters": {
+    "claude": { "enabled": true },
+    "copilot": { "enabled": true }
+  },
+  "application": {
+    "name": "saucedemo",
+    "baseUrl": "https://www.saucedemo.com",
+    "apiBaseUrl": ""
+  }
+}

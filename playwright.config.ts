@@ -40,8 +40,21 @@ export default defineConfig({
 
   projects: [
     {
+      name: 'setup',
+      testDir: './playwright/support/setup',
+      testMatch: /auth\.setup\.ts/,
+      use: {
+        baseURL: BASE_URL,
+        launchOptions: { args: ['--disable-features=AutofillServerCommunication'] },
+      },
+    },
+    {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: process.env.AUTH_STATE_PATH ?? 'playwright/storage/auth/user.json',
+      },
+      dependencies: ['setup'],
     },
   ],
 
