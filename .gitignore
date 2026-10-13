@@ -7,3 +7,5 @@ allure-report/
 playwright-report/
 test-results/
 storage/auth/*.json
+playwright/storage/auth/*.json
+playwright/environments/.env.qa
