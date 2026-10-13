@@ -21,7 +21,7 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - name: Validate playwright rules (changed files)
-        run: node scripts/engine/validate-playwright-rules.mjs --base-ref origin/${{ github.base_ref }}
+        run: node scripts/engine/validate-playwright-rules.mjs --base-ref ${{ github.base_ref }}
       - name: Check conformance (no direct @playwright/test imports in specs)
         run: node scripts/engine/conformance.mjs
       - name: Check drift (harness.config.json up to date)

@@ -7,12 +7,17 @@ import {
 import { createUiHelpers, type UiHelpers } from '../support/helpers/common/ui.helpers.js';
 import { createApiHelpers, type ApiHelpers } from '../support/helpers/common/api.helpers.js';
 import { createHarHelpers, type HarHelpers } from '../support/helpers/common/har.helpers.js';
+import {
+  createInventoryHelpers,
+  type InventoryHelpers,
+} from '../support/helpers/domain/inventory.helpers.js';
 
 type HarnessFixtures = {
   nav: NavigationHelpers;
   ui: UiHelpers;
   api: ApiHelpers;
   har: HarHelpers;
+  inventory: InventoryHelpers;
   evidence: void;
 };
 
@@ -80,6 +85,10 @@ export const test = base.extend<HarnessFixtures>({
     use: (h: HarHelpers) => Promise<void>,
   ) => {
     await use(createHarHelpers(page, context));
+  },
+
+  inventory: async ({ page }: { page: Page }, use: (h: InventoryHelpers) => Promise<void>) => {
+    await use(createInventoryHelpers(page));
   },
 });
 
