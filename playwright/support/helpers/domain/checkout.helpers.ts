@@ -37,7 +37,7 @@ export function createCheckoutHelpers(page: Page): CheckoutHelpers {
 
     async getPriceBreakdown() {
       const parse = async (selector: string) => {
-        const text = await page.locator(selector).textContent() ?? '';
+        const text = (await page.locator(selector).textContent()) ?? '';
         return parseFloat(text.replace(/[^0-9.]/g, ''));
       };
       const itemTotal = await parse(NAVIGATION_SELECTORS.checkout.itemTotal);
