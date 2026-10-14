@@ -24,6 +24,22 @@ export const NAVIGATION_SELECTORS = {
     continueShoppingButton: '[data-test="continue-shopping"]',
     checkoutButton: '[data-test="checkout"]',
   },
+  checkout: {
+    firstNameInput: '[data-test="firstName"]',
+    lastNameInput: '[data-test="lastName"]',
+    postalCodeInput: '[data-test="postalCode"]',
+    continueButton: '[data-test="continue"]',
+    cancelButton: '[data-test="cancel"]',
+    finishButton: '[data-test="finish"]',
+    itemTotal: '[data-test="subtotal-label"]',
+    tax: '[data-test="tax-label"]',
+    total: '[data-test="total-label"]',
+    completeHeader: '[data-test="complete-header"]',
+    backToProductsButton: '[data-test="back-to-products"]',
+    errorMessage: '[data-test="error"]',
+    cartItems: '[data-test="inventory-item"]',
+    itemName: '[data-test="inventory-item-name"]',
+  },
 } as const;
 
 export type NavigationSelectors = typeof NAVIGATION_SELECTORS;
