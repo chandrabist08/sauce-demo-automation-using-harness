@@ -14,6 +14,16 @@ export const NAVIGATION_SELECTORS = {
     itemPrice: '[data-test="inventory-item-price"]',
     sortSelect: '[data-test="product-sort-container"]',
   },
+  cart: {
+    badge: '[data-test="shopping-cart-badge"]',
+    link: '[data-test="shopping-cart-link"]',
+    items: '[data-test="inventory-item"]',
+    itemName: '[data-test="inventory-item-name"]',
+    addToCartButton: '[data-test^="add-to-cart"]',
+    removeButton: '[data-test^="remove"]',
+    continueShoppingButton: '[data-test="continue-shopping"]',
+    checkoutButton: '[data-test="checkout"]',
+  },
 } as const;
 
 export type NavigationSelectors = typeof NAVIGATION_SELECTORS;
