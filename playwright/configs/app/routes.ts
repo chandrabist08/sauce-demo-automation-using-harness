@@ -2,6 +2,7 @@
 export const ROUTES: Record<string, string> = {
   login: '/',
   inventory: '/inventory.html',
+  cart: '/cart.html',
 };
 
 // Filled after DISCOVER agent runs — do not add endpoints manually

@@ -11,6 +11,7 @@ import {
   createInventoryHelpers,
   type InventoryHelpers,
 } from '../support/helpers/domain/inventory.helpers.js';
+import { createCartHelpers, type CartHelpers } from '../support/helpers/domain/cart.helpers.js';
 
 type HarnessFixtures = {
   nav: NavigationHelpers;
@@ -18,6 +19,7 @@ type HarnessFixtures = {
   api: ApiHelpers;
   har: HarHelpers;
   inventory: InventoryHelpers;
+  cart: CartHelpers;
   evidence: void;
 };
 
@@ -89,6 +91,10 @@ export const test = base.extend<HarnessFixtures>({
 
   inventory: async ({ page }: { page: Page }, use: (h: InventoryHelpers) => Promise<void>) => {
     await use(createInventoryHelpers(page));
+  },
+
+  cart: async ({ page }: { page: Page }, use: (h: CartHelpers) => Promise<void>) => {
+    await use(createCartHelpers(page));
   },
 });
 
