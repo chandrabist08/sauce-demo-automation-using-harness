@@ -24,6 +24,20 @@ export const NAVIGATION_SELECTORS = {
     continueShoppingButton: '[data-test="continue-shopping"]',
     checkoutButton: '[data-test="checkout"]',
   },
+  menu: {
+    openButton: '[data-test="open-menu"]',
+    closeButton: '[data-test="close-menu"]',
+    allItemsLink: '[data-test="inventory-sidebar-link"]',
+    logoutLink: '[data-test="logout-sidebar-link"]',
+    resetLink: '[data-test="reset-sidebar-link"]',
+  },
+  product: {
+    name: '[data-test="inventory-item-name"]',
+    description: '[data-test="inventory-item-desc"]',
+    price: '[data-test="inventory-item-price"]',
+    addToCartButton: '[data-test="add-to-cart"]',
+    backButton: '[data-test="back-to-products"]',
+  },
   checkout: {
     firstNameInput: '[data-test="firstName"]',
     lastNameInput: '[data-test="lastName"]',
