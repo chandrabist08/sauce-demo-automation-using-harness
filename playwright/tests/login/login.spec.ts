@@ -9,7 +9,7 @@ test(
   {
     tag: ['@REQ-015', '@smoke', '@P1'],
   },
-  async ({ page, nav, login }) => {
+  async ({ nav, login }) => {
     await nav.goTo('login');
     await login.loginAs(TEST_USERS.locked.username, TEST_USERS.locked.pass);
 
@@ -23,7 +23,7 @@ test(
   {
     tag: ['@REQ-016', '@smoke', '@P1'],
   },
-  async ({ page, nav, login }) => {
+  async ({ nav, login }) => {
     await nav.goTo('login');
     await login.loginAs('', '');
 
@@ -37,7 +37,7 @@ test(
   {
     tag: ['@REQ-017', '@smoke', '@P1'],
   },
-  async ({ page, nav, login }) => {
+  async ({ nav, login }) => {
     await nav.goTo('login');
     await login.loginAs(TEST_USERS.standard.username, '');
 
@@ -51,7 +51,7 @@ test(
   {
     tag: ['@REQ-018', '@smoke', '@P1'],
   },
-  async ({ page, nav, login }) => {
+  async ({ nav, login }) => {
     await nav.goTo('login');
     await login.loginAs(TEST_USERS.standard.username, 'wrong_password');
 
