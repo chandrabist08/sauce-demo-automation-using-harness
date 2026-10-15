@@ -1,6 +1,6 @@
-# Playwright Harness
+# Sauce Demo — Playwright Test Automation
 
-A production-grade Playwright TypeScript test harness boilerplate using a **helper-first architecture**. Built for QA teams and AI-assisted test generation.
+End-to-end test suite for [saucedemo.com](https://www.saucedemo.com) built with **Playwright + TypeScript** using a **helper-first architecture**. Covers 25 tests across 6 modules — inventory, cart, checkout, login, product detail, and burger menu — with full CI/CD integration via GitHub Actions.
 
 ---
 
