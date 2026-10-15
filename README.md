@@ -1,6 +1,6 @@
-# Playwright Harness
+# Sauce Demo — Playwright Test Automation
 
-A production-grade Playwright TypeScript test harness boilerplate using a **helper-first architecture**. Built for QA teams and AI-assisted test generation.
+End-to-end test suite for [saucedemo.com](https://www.saucedemo.com) built with **Playwright + TypeScript** using a **helper-first architecture**. Covers 25 tests across 6 modules — inventory, cart, checkout, login, product detail, and burger menu — with full CI/CD integration via GitHub Actions.
 
 ---
 
@@ -53,14 +53,23 @@ Config → Helpers → Fixture → Tests
 ├── playwright/
 │   ├── configs/
 │   │   ├── app/routes.ts           # ROUTES + API_ENDPOINTS registry
+│   │   ├── app/test-users.ts       # Test user credentials (all 6 saucedemo users)
 │   │   ├── ui/                     # Selector constants
 │   │   └── db/                     # Frozen SQL query entries
 │   ├── fixtures/
-│   │   └── base.fixture.ts         # nav / ui / api / har / evidence fixtures
+│   │   └── base.fixture.ts         # nav / ui / api / har / inventory / cart / checkout
+│   │                               #   / login / product / menu / evidence fixtures
 │   ├── support/
-│   │   ├── helpers/common/         # nav, ui, api, har, db helpers
+│   │   ├── helpers/common/         # nav, ui, api, har helpers
+│   │   ├── helpers/domain/         # inventory, cart, checkout, login, product, menu helpers
 │   │   └── setup/                  # storageState auth setup
-│   └── tests/                      # Spec files (empty until GATHER → BUILD)
+│   └── tests/
+│       ├── inventory/              # REQ-001–005
+│       ├── cart/                   # REQ-006–009
+│       ├── checkout/               # REQ-010–014
+│       ├── login/                  # REQ-015–018 (unauthenticated)
+│       ├── product/                # REQ-019–021
+│       └── menu/                   # REQ-022–024
 ├── scripts/
 │   └── engine/                     # CLI rule validator, evidence builder, sync
 ├── harness.config.json             # Single source of truth for rules + agents
@@ -88,15 +97,15 @@ npx playwright install
 ### 3. Configure environment
 
 ```bash
-cp .env.example .env
+cp playwright/environments/.env.qa.example playwright/environments/.env.qa
 ```
 
-Edit `.env`:
+Edit `playwright/environments/.env.qa`:
 
 ```env
-ENV=qa
-BASE_URL=https://your-app.com
-API_BASE_URL=https://your-api.com
+BASE_URL=https://www.saucedemo.com
+USERNAME=standard_user
+PASSWORD=secret_sauce
 ```
 
 ### 4. Verify the harness
@@ -284,6 +293,23 @@ This powers the DISCOVER phase — the `playwright-cli` agent can navigate pages
 
 ---
 
+## Test Coverage
+
+25 tests across 6 modules — all `@smoke @P1`, fully independent, no hard waits.
+
+| Module | Spec | REQs | Tests |
+|---|---|---|---|
+| Inventory | `tests/inventory/inventory.spec.ts` | REQ-001–005 | Product listing, all 4 sort directions |
+| Cart | `tests/cart/cart.spec.ts` | REQ-006–009 | Add, badge count, remove, clear all |
+| Checkout | `tests/checkout/checkout.spec.ts` | REQ-010–014 | Full flow, price math, validation, cancel step 1 & 2 |
+| Login | `tests/login/login.spec.ts` | REQ-015–018 | Locked user, empty fields, wrong credentials |
+| Product detail | `tests/product/product.spec.ts` | REQ-019–021 | Name/price match, add from detail, back button |
+| Burger menu | `tests/menu/menu.spec.ts` | REQ-022–024 | All Items, Logout, Reset App State |
+
+See `docs/application-intelligence/` for per-module selector and edge-case reference.
+
+---
+
 ## CI/CD
 
 GitHub Actions runs on every push and pull request:
@@ -296,5 +322,6 @@ GitHub Actions runs on every push and pull request:
 
 | Secret | Description |
 |--------|-------------|
-| `BASE_URL` | App URL for the target environment |
-| `API_BASE_URL` | API base URL |
+| `QA_BASE_URL` | App URL (`https://www.saucedemo.com`) |
+| `USERNAME` | Login username (`standard_user`) |
+| `PASSWORD` | Login password (`secret_sauce`) |
