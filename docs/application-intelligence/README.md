@@ -9,6 +9,9 @@ This directory contains project context documents that inform agent behaviour.
 - [`_template/module-context.md`](_template/module-context.md) — Inventory module (REQ-001–REQ-005)
 - [`cart-module-context.md`](cart-module-context.md) — Cart module (REQ-006–REQ-009)
 - [`checkout-module-context.md`](checkout-module-context.md) — Checkout module (REQ-010–REQ-014)
+- [`login-module-context.md`](login-module-context.md) — Login edge cases (REQ-015–REQ-018)
+- [`product-module-context.md`](product-module-context.md) — Product detail page (REQ-019–REQ-021)
+- [`menu-module-context.md`](menu-module-context.md) — Burger menu (REQ-022–REQ-024)
 
 ## Templates
 - `_template/requirement.example.json` — copy for each approved requirement
