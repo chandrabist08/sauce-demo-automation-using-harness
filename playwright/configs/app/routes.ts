@@ -3,6 +3,7 @@ export const ROUTES: Record<string, string> = {
   login: '/',
   inventory: '/inventory.html',
   cart: '/cart.html',
+  productDetail: '/inventory-item.html',
   checkoutStepOne: '/checkout-step-one.html',
   checkoutStepTwo: '/checkout-step-two.html',
   checkoutComplete: '/checkout-complete.html',

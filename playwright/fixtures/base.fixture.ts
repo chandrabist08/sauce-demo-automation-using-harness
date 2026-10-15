@@ -17,6 +17,11 @@ import {
   type CheckoutHelpers,
 } from '../support/helpers/domain/checkout.helpers.js';
 import { createLoginHelpers, type LoginHelpers } from '../support/helpers/domain/login.helpers.js';
+import {
+  createProductHelpers,
+  type ProductHelpers,
+} from '../support/helpers/domain/product.helpers.js';
+import { createMenuHelpers, type MenuHelpers } from '../support/helpers/domain/menu.helpers.js';
 
 type HarnessFixtures = {
   nav: NavigationHelpers;
@@ -27,6 +32,8 @@ type HarnessFixtures = {
   cart: CartHelpers;
   checkout: CheckoutHelpers;
   login: LoginHelpers;
+  product: ProductHelpers;
+  menu: MenuHelpers;
   evidence: void;
 };
 
@@ -110,6 +117,14 @@ export const test = base.extend<HarnessFixtures>({
 
   login: async ({ page }: { page: Page }, use: (h: LoginHelpers) => Promise<void>) => {
     await use(createLoginHelpers(page));
+  },
+
+  product: async ({ page }: { page: Page }, use: (h: ProductHelpers) => Promise<void>) => {
+    await use(createProductHelpers(page));
+  },
+
+  menu: async ({ page }: { page: Page }, use: (h: MenuHelpers) => Promise<void>) => {
+    await use(createMenuHelpers(page));
   },
 });
 
