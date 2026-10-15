@@ -16,6 +16,7 @@ import {
   createCheckoutHelpers,
   type CheckoutHelpers,
 } from '../support/helpers/domain/checkout.helpers.js';
+import { createLoginHelpers, type LoginHelpers } from '../support/helpers/domain/login.helpers.js';
 
 type HarnessFixtures = {
   nav: NavigationHelpers;
@@ -25,6 +26,7 @@ type HarnessFixtures = {
   inventory: InventoryHelpers;
   cart: CartHelpers;
   checkout: CheckoutHelpers;
+  login: LoginHelpers;
   evidence: void;
 };
 
@@ -104,6 +106,10 @@ export const test = base.extend<HarnessFixtures>({
 
   checkout: async ({ page }: { page: Page }, use: (h: CheckoutHelpers) => Promise<void>) => {
     await use(createCheckoutHelpers(page));
+  },
+
+  login: async ({ page }: { page: Page }, use: (h: LoginHelpers) => Promise<void>) => {
+    await use(createLoginHelpers(page));
   },
 });
 
