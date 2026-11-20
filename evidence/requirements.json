@@ -1,4 +1,513 @@
 {
   "version": 1,
-  "requirements": []
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "module": "inventory",
+      "title": "logged-in user sees the product inventory",
+      "preconditions": [
+        "Standard user credentials are available via CI secret / .env",
+        "The SauceDemo instance is reachable at https://www.saucedemo.com",
+        "An active authenticated session exists via storageState"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is loaded at /inventory.html",
+        "When the authenticated user lands on the page",
+        "Then the page heading displays 'Products'",
+        "And exactly 6 product items are visible"
+      ],
+      "expectedOutcome": "Inventory page loads with 6 product items and a 'Products' heading and no console errors",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "inventory.spec.ts / SauceDemo inventory requirements"
+    },
+    {
+      "id": "REQ-002",
+      "module": "inventory",
+      "title": "user can sort products A to Z",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The inventory page is loaded with all 6 products visible"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed",
+        "When the user selects 'Name (A to Z)' from the sort dropdown",
+        "Then the product names are displayed in ascending alphabetical order"
+      ],
+      "expectedOutcome": "Product list reorders to match ascending alphabetical sort with no page reload errors",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "inventory.spec.ts / SauceDemo inventory requirements"
+    },
+    {
+      "id": "REQ-003",
+      "module": "inventory",
+      "title": "user can sort products Z to A",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The inventory page is loaded with all 6 products visible"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed",
+        "When the user selects 'Name (Z to A)' from the sort dropdown",
+        "Then the product names are displayed in descending alphabetical order"
+      ],
+      "expectedOutcome": "Product list reorders to match descending alphabetical sort with no page reload errors",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "inventory.spec.ts / SauceDemo inventory requirements"
+    },
+    {
+      "id": "REQ-004",
+      "module": "inventory",
+      "title": "user can sort products by price low to high",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The inventory page is loaded with all 6 products visible"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed",
+        "When the user selects 'Price (low to high)' from the sort dropdown",
+        "Then the products are ordered from the lowest price to the highest price"
+      ],
+      "expectedOutcome": "Product list reorders by ascending price with no page reload errors",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "inventory.spec.ts / SauceDemo inventory requirements"
+    },
+    {
+      "id": "REQ-005",
+      "module": "inventory",
+      "title": "user can sort products by price high to low",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The inventory page is loaded with all 6 products visible"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed",
+        "When the user selects 'Price (high to low)' from the sort dropdown",
+        "Then the products are ordered from the highest price to the lowest price"
+      ],
+      "expectedOutcome": "Product list reorders by descending price with no page reload errors",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "inventory.spec.ts / SauceDemo inventory requirements"
+    },
+    {
+      "id": "REQ-006",
+      "module": "cart",
+      "title": "adding one item increments the cart badge to 1",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The inventory page is loaded",
+        "The cart is empty (badge is not visible)"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed with an empty cart",
+        "When the user clicks 'Add to cart' on the first product",
+        "Then the cart badge in the top navigation displays '1'"
+      ],
+      "expectedOutcome": "Cart badge appears and shows the value 1 after one item is added",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "cart.spec.ts / SauceDemo cart requirements"
+    },
+    {
+      "id": "REQ-007",
+      "module": "cart",
+      "title": "adding two items increments the cart badge to 2",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The inventory page is loaded",
+        "The cart is empty (badge is not visible)"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed with an empty cart",
+        "When the user clicks 'Add to cart' on the first product",
+        "And the user clicks 'Add to cart' on the second product",
+        "Then the cart badge in the top navigation displays '2'"
+      ],
+      "expectedOutcome": "Cart badge shows the value 2 after two distinct items are added",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "cart.spec.ts / SauceDemo cart requirements"
+    },
+    {
+      "id": "REQ-008",
+      "module": "cart",
+      "title": "added item appears on the cart page",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The inventory page is loaded",
+        "The cart is empty"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed",
+        "When the user adds the first product to the cart",
+        "And navigates to the cart page",
+        "Then exactly 1 item is listed in the cart",
+        "And the cart item name matches the product name from the inventory"
+      ],
+      "expectedOutcome": "Cart page shows the correct product that was added from the inventory",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "cart.spec.ts / SauceDemo cart requirements"
+    },
+    {
+      "id": "REQ-009",
+      "module": "cart",
+      "title": "removing an item from cart clears it and removes the badge",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "One item has been added to the cart",
+        "The cart page is displayed"
+      ],
+      "acceptanceCriteria": [
+        "Given the cart page shows 1 item and the badge displays '1'",
+        "When the user clicks 'Remove' on the item",
+        "Then the cart shows 0 items",
+        "And the cart badge is no longer visible in the top navigation"
+      ],
+      "expectedOutcome": "Cart is emptied and badge disappears after the only item is removed",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "cart.spec.ts / SauceDemo cart requirements"
+    },
+    {
+      "id": "REQ-010",
+      "module": "checkout",
+      "title": "completing checkout with 2 products shows correct price breakdown and order confirmation",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "Two items have been added to the cart",
+        "The cart page is accessible"
+      ],
+      "acceptanceCriteria": [
+        "Given the cart contains 2 items",
+        "When the user proceeds to checkout and fills in valid shipping information",
+        "Then the order review shows a tax value greater than zero",
+        "And the displayed total equals item total plus tax",
+        "And after finishing, the confirmation heading displays 'Thank you for your order!'"
+      ],
+      "expectedOutcome": "Checkout completes with mathematically correct price breakdown and a success confirmation message",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "checkout.spec.ts / SauceDemo checkout requirements"
+    },
+    {
+      "id": "REQ-011",
+      "module": "checkout",
+      "title": "checkout form shows error when submitted with empty fields",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "One item is in the cart",
+        "The user is on checkout step one at /checkout-step-one.html"
+      ],
+      "acceptanceCriteria": [
+        "Given checkout step one is displayed with all fields empty",
+        "When the user clicks the Continue button without filling any fields",
+        "Then an error message is visible on the page"
+      ],
+      "expectedOutcome": "Checkout form blocks progression and displays a validation error when submitted empty",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "checkout.spec.ts / SauceDemo checkout requirements"
+    },
+    {
+      "id": "REQ-012",
+      "module": "checkout",
+      "title": "cancelling from checkout step one returns to cart with items intact",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "Two items are in the cart",
+        "The user is on checkout step one at /checkout-step-one.html"
+      ],
+      "acceptanceCriteria": [
+        "Given checkout step one is displayed with 2 items in the cart",
+        "When the user clicks the Cancel button",
+        "Then the browser navigates back to /cart.html",
+        "And the cart still shows 2 items"
+      ],
+      "expectedOutcome": "Cancelling checkout returns the user to their cart without losing any added items",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "checkout.spec.ts / SauceDemo checkout requirements"
+    },
+    {
+      "id": "REQ-013",
+      "module": "checkout",
+      "title": "order summary on step two lists the correct item names",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "Two items are in the cart",
+        "Shipping information has been filled and the user is on checkout step two"
+      ],
+      "acceptanceCriteria": [
+        "Given checkout step two (order review) is displayed",
+        "When the page loads",
+        "Then the item names listed in the order summary match the names of the products added to the cart"
+      ],
+      "expectedOutcome": "Order review accurately reflects all items added to the cart before checkout",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "checkout.spec.ts / SauceDemo checkout requirements"
+    },
+    {
+      "id": "REQ-014",
+      "module": "checkout",
+      "title": "cancelling from checkout step two returns to inventory",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "One item is in the cart",
+        "The user is on checkout step two at /checkout-step-two.html"
+      ],
+      "acceptanceCriteria": [
+        "Given checkout step two is displayed",
+        "When the user clicks the Cancel button",
+        "Then the browser navigates to /inventory.html",
+        "And the page heading displays 'Products'"
+      ],
+      "expectedOutcome": "Cancelling from the order review page returns the user to the main inventory",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "checkout.spec.ts / SauceDemo checkout requirements"
+    },
+    {
+      "id": "REQ-015",
+      "module": "login",
+      "title": "locked-out user sees a specific account-locked error",
+      "preconditions": [
+        "No active session exists (storageState is clean for this test)",
+        "The SauceDemo login page is accessible at /",
+        "The locked_out_user credentials are available via CI secret / .env"
+      ],
+      "acceptanceCriteria": [
+        "Given the login page is displayed",
+        "When the locked_out_user submits their credentials",
+        "Then an error message containing 'Sorry, this user has been locked out.' is displayed"
+      ],
+      "expectedOutcome": "Login is blocked with a clear account-locked error message for the locked_out_user account",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "login.spec.ts / SauceDemo authentication requirements"
+    },
+    {
+      "id": "REQ-016",
+      "module": "login",
+      "title": "submitting the login form with no username shows a validation error",
+      "preconditions": [
+        "No active session exists (storageState is clean for this test)",
+        "The SauceDemo login page is accessible at /"
+      ],
+      "acceptanceCriteria": [
+        "Given the login page is displayed with both fields empty",
+        "When the user clicks the Login button without entering any credentials",
+        "Then an error message containing 'Username is required' is displayed"
+      ],
+      "expectedOutcome": "Login form blocks submission and surfaces a username validation error when no credentials are provided",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "login.spec.ts / SauceDemo authentication requirements"
+    },
+    {
+      "id": "REQ-017",
+      "module": "login",
+      "title": "submitting the login form with no password shows a validation error",
+      "preconditions": [
+        "No active session exists (storageState is clean for this test)",
+        "The SauceDemo login page is accessible at /",
+        "A valid username is available"
+      ],
+      "acceptanceCriteria": [
+        "Given the login page is displayed",
+        "When the user enters a valid username but leaves the password field empty and clicks Login",
+        "Then an error message containing 'Password is required' is displayed"
+      ],
+      "expectedOutcome": "Login form blocks submission and surfaces a password validation error when password is omitted",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "login.spec.ts / SauceDemo authentication requirements"
+    },
+    {
+      "id": "REQ-018",
+      "module": "login",
+      "title": "wrong credentials show a credential-mismatch error",
+      "preconditions": [
+        "No active session exists (storageState is clean for this test)",
+        "The SauceDemo login page is accessible at /"
+      ],
+      "acceptanceCriteria": [
+        "Given the login page is displayed",
+        "When the user enters a valid username with an incorrect password and clicks Login",
+        "Then an error message containing 'Username and password do not match any user in this service' is displayed"
+      ],
+      "expectedOutcome": "Login is rejected with a credential-mismatch error when the password is wrong",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "login.spec.ts / SauceDemo authentication requirements"
+    },
+    {
+      "id": "REQ-019",
+      "module": "product",
+      "title": "clicking a product on inventory navigates to its detail page with matching name and price",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The inventory page is loaded with all 6 products visible"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed",
+        "When the user clicks on the first product",
+        "Then the browser navigates to the product detail page",
+        "And the detail page displays the same product name as shown on the inventory",
+        "And the detail page displays the same price as shown on the inventory"
+      ],
+      "expectedOutcome": "Product detail page loads with name and price that exactly match the inventory listing",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "product.spec.ts / SauceDemo product detail requirements"
+    },
+    {
+      "id": "REQ-020",
+      "module": "product",
+      "title": "adding a product to cart from the detail page increments the cart badge",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The user is on a product detail page",
+        "The cart is empty"
+      ],
+      "acceptanceCriteria": [
+        "Given a product detail page is displayed with an empty cart",
+        "When the user clicks 'Add to cart'",
+        "Then the cart count increments to 1"
+      ],
+      "expectedOutcome": "Cart badge reflects the item added from the product detail page",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "product.spec.ts / SauceDemo product detail requirements"
+    },
+    {
+      "id": "REQ-021",
+      "module": "product",
+      "title": "back button on the detail page returns the user to the inventory listing",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The user is on a product detail page"
+      ],
+      "acceptanceCriteria": [
+        "Given a product detail page is displayed",
+        "When the user clicks the Back button",
+        "Then the browser navigates back to /inventory.html"
+      ],
+      "expectedOutcome": "User is returned to the full inventory listing after pressing Back on a product detail page",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "product.spec.ts / SauceDemo product detail requirements"
+    },
+    {
+      "id": "REQ-022",
+      "module": "menu",
+      "title": "All Items link in the burger menu navigates to the inventory page",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The inventory page is loaded and the burger menu is accessible"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed",
+        "When the user opens the burger menu and clicks 'All Items'",
+        "Then the browser URL matches /inventory.html",
+        "And the page heading displays 'Products'"
+      ],
+      "expectedOutcome": "Clicking All Items in the burger menu lands the user on the inventory page",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "menu.spec.ts / SauceDemo burger menu requirements"
+    },
+    {
+      "id": "REQ-023",
+      "module": "menu",
+      "title": "Logout link in the burger menu ends the session and redirects to the login page",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "The inventory page is loaded and the burger menu is accessible"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed with an active session",
+        "When the user opens the burger menu and clicks 'Logout'",
+        "Then the session is terminated",
+        "And the login page is displayed with the username input and login button visible"
+      ],
+      "expectedOutcome": "User is logged out and redirected to the login page with no active session remaining",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "menu.spec.ts / SauceDemo burger menu requirements"
+    },
+    {
+      "id": "REQ-024",
+      "module": "menu",
+      "title": "Reset App State in the burger menu clears all items from the cart",
+      "preconditions": [
+        "An active authenticated session exists via storageState",
+        "Two items have been added to the cart",
+        "The cart badge is visible showing '2'"
+      ],
+      "acceptanceCriteria": [
+        "Given the inventory page is displayed with 2 items in the cart",
+        "When the user opens the burger menu and clicks 'Reset App State'",
+        "Then the cart badge is no longer visible",
+        "And the cart is empty"
+      ],
+      "expectedOutcome": "All cart state is cleared and the badge disappears after resetting app state via the burger menu",
+      "scenarioType": "SMOKE",
+      "priority": "P1",
+      "status": "approved",
+      "frameworkTier": "ui",
+      "source": "menu.spec.ts / SauceDemo burger menu requirements"
+    }
+  ]
 }
