@@ -1,42 +1,28 @@
-# Module Context — Inventory
+# Module Context — {{ModuleName}}
 
 ## Module name
-Inventory (`/inventory.html`) — product listing page, the primary landing page after login.
+{{ModuleName}} (`/route.html`) — brief description of what this module does and its role in the application.
 
 ## User story / requirement IDs covered
-- REQ-001: Inventory page displays all 6 products
-- REQ-002: Products sort A→Z by name
-- REQ-003: Products sort Z→A by name
-- REQ-004: Products sort low→high by price
-- REQ-005: Products sort high→low by price
+- REQ-XXX: One-line description of the requirement
+- REQ-XXX: One-line description of the requirement
 
 ## Key routes
 | Key | Path |
 |---|---|
-| `inventory` | `/inventory.html` |
+| `routeKey` | `/path.html` |
 
 ## Key API endpoints
-None — product data is static, rendered from JS.
+List any API calls this module makes, or "None" if it is UI-only.
 
-## Key selectors (`data-test` values)
+## Key selectors
 | Selector constant | `data-test` value | Purpose |
 |---|---|---|
-| `inventory.title` | `.title` (class, not data-test) | "Products" heading |
-| `inventory.items` | `inventory-item` | Each product card |
-| `inventory.itemName` | `inventory-item-name` | Product name text |
-| `inventory.itemPrice` | `inventory-item-price` | Price label (includes `$`) |
-| `inventory.sortSelect` | `product-sort-container` | Sort dropdown |
-| `cart.addToCartButton` | `add-to-cart` (prefix match `^=`) | Add to cart buttons |
+| `module.element` | `data-test-value` | What this element is |
 
 ## Key helpers
-- `inventory.sortBy(option)` — selects a sort option (`az`, `za`, `lohi`, `hilo`)
-- `inventory.getItemNames()` — returns all visible product names
-- `inventory.getItemPrices()` — returns prices as `number[]` (strips `$`)
-- `cart.addItemAt(index)` — adds item at nth position on inventory page
+- `helperName(args)` — what it does
+- `helperName(args)` — what it does
 
 ## Edge cases to test
-- All 6 products visible after login (count assertion)
-- Sort order is stable when two prices are equal
-- Add-to-cart button text changes to "Remove" after click
-- Cart badge increments for each item added from inventory
-- `problem_user`: product images are broken (img `src` contains wrong filename)
+- List known edge cases, boundary conditions, or tricky behaviours specific to this module
