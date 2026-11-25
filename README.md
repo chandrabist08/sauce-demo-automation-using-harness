@@ -1,6 +1,6 @@
 # Sauce Demo — Playwright Test Automation
 
-End-to-end test suite for [saucedemo.com](https://www.saucedemo.com) built with **Playwright + TypeScript** using a **helper-first architecture**. Covers 25 tests across 6 modules — inventory, cart, checkout, login, product detail, and burger menu — with full CI/CD integration via GitHub Actions.
+End-to-end test suite for [saucedemo.com](https://www.saucedemo.com) built with **Playwright + TypeScript** using a **helper-first architecture**. Covers 24 tests across 6 modules — inventory, cart, checkout, login, product detail, and burger menu — with full CI/CD integration via GitHub Actions.
 
 ---
 
@@ -8,7 +8,6 @@ End-to-end test suite for [saucedemo.com](https://www.saucedemo.com) built with 
 
 - [Playwright](https://playwright.dev/) — browser automation
 - [TypeScript](https://www.typescriptlang.org/) — type-safe test code
-- [Allure](https://allurereport.org/) — rich test reporting
 - [GitHub Actions](https://github.com/features/actions) — CI/CD pipeline
 
 ---
@@ -127,9 +126,6 @@ npm run test:smoke
 
 # Headed mode
 npm run test:headed
-
-# UI mode
-npm run test:ui
 ```
 
 ---
@@ -139,9 +135,6 @@ npm run test:ui
 ```bash
 # Playwright HTML report
 npm run report:html
-
-# Allure report
-npm run report:allure:serve
 ```
 
 ---
@@ -280,12 +273,9 @@ This powers the DISCOVER phase — the `playwright-cli` agent can navigate pages
 |--------|-------------|
 | `npm test` | Run all tests |
 | `npm run test:smoke` | Run `@smoke` tagged tests |
-| `npm run test:regression` | Run `@regression` tagged tests |
 | `npm run test:headed` | Run with visible browser |
-| `npm run test:ui` | Open Playwright UI mode |
 | `npm run verify` | Full harness verification pipeline |
 | `npm run report:html` | Open HTML report |
-| `npm run report:allure:serve` | Open Allure report |
 | `npm run check:rules` | Run rule engine against all files |
 | `npm run harness:check` | Validate harness config |
 | `npm run lint` | Lint TypeScript files |
@@ -295,7 +285,7 @@ This powers the DISCOVER phase — the `playwright-cli` agent can navigate pages
 
 ## Test Coverage
 
-25 tests across 6 modules — all `@smoke @P1`, fully independent, no hard waits.
+24 tests across 6 modules — all `@smoke @P1`, fully independent, no hard waits.
 
 | Module | Spec | REQs | Tests |
 |---|---|---|---|
@@ -314,7 +304,7 @@ See `docs/application-intelligence/` for per-module selector and edge-case refer
 
 GitHub Actions runs on every push and pull request:
 
-- **playwright.yml** — full test suite, uploads HTML + Allure reports as artifacts
+- **playwright.yml** — full test suite, uploads HTML report as artifact
 - **playwright-rules.yml** — rule engine scans changed files, blocks violation PRs
 - **locator-strategy.yml** — enforces locator priority (`getByRole` > `getByTestId`)
 
