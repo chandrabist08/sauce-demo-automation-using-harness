@@ -4,10 +4,10 @@
 Cart (`/cart.html`) — shopping cart page; lists items added from inventory.
 
 ## User story / requirement IDs covered
-- REQ-006: Adding an item increments the cart badge
-- REQ-007: Cart page lists all added items
-- REQ-008: Removing an item from cart decrements the badge
-- REQ-009: Removing all items clears the cart badge entirely
+- REQ-006: Adding one item increments the cart badge to 1
+- REQ-007: Adding two items increments the cart badge to 2
+- REQ-008: Added item appears on the cart page with correct name
+- REQ-009: Removing an item from cart clears it and removes the badge
 
 ## Key routes
 | Key | Path |
